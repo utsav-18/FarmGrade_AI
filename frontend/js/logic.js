@@ -48,7 +48,8 @@ uploadBtn.addEventListener("click", () => {
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:3000/predict", {
+      // 🔑 IMPORTANT: relative path (works on Render + localhost)
+      const res = await fetch("/predict", {
         method: "POST",
         body: formData
       });

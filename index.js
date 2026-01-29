@@ -3,52 +3,77 @@ const multer = require("multer");
 const cors = require("cors");
 const { spawn } = require("child_process");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
-const PORT = 3000;
 
+/* 🔑 IMPORTANT: Render provides PORT */
+const PORT = process.env.PORT || 3000;
+
+/* ---------- MIDDLEWARE ---------- */
 app.use(cors());
 app.use(express.json());
 app.use(express.static("frontend"));
 app.use("/uploads", express.static("uploads"));
 
-// ---------- FILE UPLOAD ----------
+/* ---------- ENSURE UPLOADS FOLDER EXISTS ---------- */
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
+
+/* ---------- FILE UPLOAD CONFIG ---------- */
 const storage = multer.diskStorage({
-  destination: "uploads/",
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
   }
 });
+
 const upload = multer({ storage });
 
-// ---------- API ----------
+/* ---------- API ---------- */
 app.post("/predict", upload.single("image"), (req, res) => {
-  const imagePath = req.file.path;
-
-  const python = spawn("python", ["ml/predict.py", imagePath], {
-    env: { ...process.env, PYTHONIOENCODING: "utf-8" }
-  });
-
-  let output = "";
-
-  python.stdout.on("data", data => {
-    output += data.toString();
-  });
-
-  python.stderr.on("data", err => {
-    console.error("PY ERROR:", err.toString());
-  });
-
-  python.on("close", () => {
-    try {
-      const result = JSON.parse(output);
-      res.json(result);
-    } catch (e) {
-      res.status(500).json({ error: "Prediction failed" });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No image uploaded" });
     }
-  });
+
+    const imagePath = req.file.path;
+
+    /* 🔑 Use python3 for Render */
+    const python = spawn("python3", ["ml/predict.py", imagePath], {
+      env: { ...process.env, PYTHONIOENCODING: "utf-8" }
+    });
+
+    let output = "";
+
+    python.stdout.on("data", (data) => {
+      output += data.toString();
+    });
+
+    python.stderr.on("data", (err) => {
+      console.error("🐍 PYTHON ERROR:", err.toString());
+    });
+
+    python.on("close", () => {
+      try {
+        const result = JSON.parse(output);
+        res.json(result);
+      } catch (error) {
+        console.error("❌ JSON PARSE ERROR:", output);
+        res.status(500).json({ error: "Prediction failed" });
+      }
+    });
+
+  } catch (err) {
+    console.error("❌ SERVER ERROR:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
+/* ---------- SERVER START ---------- */
 app.listen(PORT, () => {
   console.log(`✅ FarmGrade AI running at http://localhost:${PORT}`);
 });
