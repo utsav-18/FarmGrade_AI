@@ -5,8 +5,14 @@ import numpy as np
 from PIL import Image
 import os
 
-MODEL_PATH = os.path.join("ml", "models", "turmeric_grading_cnn.keras")
+# 🔇 Silence TensorFlow logs (CRITICAL)
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
+# 📁 Absolute path fix (CRITICAL)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "models", "turmeric_grading_cnn.keras")
+
+# ✅ Load model safely
 model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 CLASS_NAMES = ["Grade A", "Grade B", "Grade C"]
@@ -39,6 +45,10 @@ if __name__ == "__main__":
         image_path = sys.argv[1]
         image = Image.open(image_path)
         result = predict(image)
+
+        # ✅ ONLY JSON OUTPUT (IMPORTANT)
         print(json.dumps(result))
+
     except Exception as e:
+        # ✅ Always return JSON, even on error
         print(json.dumps({ "error": str(e) }))

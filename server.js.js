@@ -7,7 +7,7 @@ const fs = require("fs");
 
 const app = express();
 
-/* 🔑 IMPORTANT: Render provides PORT */
+/* 🔑 Render / Local compatible PORT */
 const PORT = process.env.PORT || 3000;
 
 /* ---------- MIDDLEWARE ---------- */
@@ -23,12 +23,9 @@ if (!fs.existsSync("uploads")) {
 
 /* ---------- FILE UPLOAD CONFIG ---------- */
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
-  }
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) =>
+    cb(null, `${Date.now()}${path.extname(file.originalname)}`)
 });
 
 const upload = multer({ storage });
@@ -42,8 +39,10 @@ app.post("/predict", upload.single("image"), (req, res) => {
 
     const imagePath = req.file.path;
 
-    /* 🔑 Use python3 for Render */
-    const python = spawn("python3", ["ml/predict.py", imagePath], {
+    /* ✅ OS-SAFE Python command */
+    const PYTHON_CMD = process.platform === "win32" ? "python" : "python3";
+
+    const python = spawn(PYTHON_CMD, ["ml/predict.py", imagePath], {
       env: { ...process.env, PYTHONIOENCODING: "utf-8" }
     });
 
