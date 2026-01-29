@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Post</title>
+    <title>FarmGrade AI – Turmeric Grading</title>
     <link rel="stylesheet" href="/css/homePage.css">
 </head>
 <body>
@@ -30,17 +30,18 @@
         </div>
     </nav>
     
+    <!-- HERO -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-label">AI-Powered Agricultural Intelligence</div>
                 <h1>
                     Precision Grading for<br>
-                    <span class="text-gradient">Modern Agriculture</span>
+                    <span class="text-gradient">Turmeric Quality</span>
                 </h1>
                 <p class="hero-description">
-                    Advanced computer vision technology delivers instant quality assessment and fair market pricing 
-                    for tender coconut and turmeric crops, empowering farmers with data-driven insights
+                    Advanced computer vision technology delivers instant turmeric quality assessment and fair market pricing,
+                    empowering farmers with accurate, data-driven insights.
                 </p>
                 
                 <div class="stats-row">
@@ -53,14 +54,15 @@
                         <div class="stat-label">Analysis Duration</div>
                     </div>
                     <div class="stat-block">
-                        <div class="stat-number">2</div>
-                        <div class="stat-label">Supported Crops</div>
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Supported Crop (Turmeric)</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     
+    <!-- PROCESS -->
     <section class="process">
         <div class="container">
             <div class="section-head">
@@ -73,8 +75,7 @@
                     <div class="process-num">01</div>
                     <h3 class="process-title">Image Capture</h3>
                     <p class="process-desc">
-                        Upload high-resolution photographs of your produce through our secure platform 
-                        for comprehensive analysis
+                        Upload high-quality images of turmeric rhizomes for accurate visual analysis.
                     </p>
                 </div>
                 
@@ -82,8 +83,7 @@
                     <div class="process-num">02</div>
                     <h3 class="process-title">AI Processing</h3>
                     <p class="process-desc">
-                        Advanced algorithms evaluate quality indicators including size uniformity, 
-                        color consistency, and structural integrity
+                        CNN-based deep learning analyzes texture, color, and surface quality of turmeric.
                     </p>
                 </div>
                 
@@ -91,22 +91,23 @@
                     <div class="process-num">03</div>
                     <h3 class="process-title">Market Insights</h3>
                     <p class="process-desc">
-                        Receive detailed grading with confidence metrics and recommended price ranges 
-                        based on current market standards
+                        Get quality grade, confidence score, and recommended market price instantly.
                     </p>
                 </div>
             </div>
         </div>
     </section>
     
+    <!-- APPLICATION -->
     <section class="application">
         <div class="container">
             <div class="section-head">
                 <div class="section-tag">Platform Interface</div>
-                <h2>Crop Assessment Tool</h2>
+                <h2>Turmeric Assessment Tool</h2>
             </div>
             
             <div class="app-layout">
+                <!-- UPLOAD CARD -->
                 <div class="app-card">
                     <div class="card-header">
                         <div class="card-icon">
@@ -116,7 +117,7 @@
                                 <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
                         </div>
-                        <h3 class="card-title">Upload Image</h3>
+                        <h3 class="card-title">Upload Turmeric Image</h3>
                     </div>
                     
                     <div class="upload-area" id="uploadArea">
@@ -127,29 +128,18 @@
                                 <polyline points="21 15 16 10 5 21"/>
                             </svg>
                         </div>
-                        <div class="upload-title">Select or drop image file</div>
+                        <div class="upload-title">Select or drop turmeric image</div>
                         <div class="upload-hint">Supports JPG, PNG formats up to 5MB</div>
                     </div>
                     
                     <div class="actions">
                         <button class="btn btn-primary" id="uploadBtn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                <polyline points="7 10 12 15 17 10"/>
-                                <line x1="12" y1="15" x2="12" y2="3"/>
-                            </svg>
                             Choose File
-                        </button>
-                        <button class="btn btn-outline" id="cameraBtn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                                <circle cx="12" cy="13" r="4"/>
-                            </svg>
-                            Camera
                         </button>
                     </div>
                 </div>
                 
+                <!-- RESULT CARD -->
                 <div class="app-card">
                     <div class="card-header">
                         <div class="card-icon">
@@ -161,44 +151,38 @@
                     </div>
                     
                     <div class="results-empty" id="emptyState">
-                        <div class="empty-icon">
-                            <svg viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="m21 21-4.35-4.35"/>
-                            </svg>
-                        </div>
-                        <div class="empty-text">Upload crop image to begin assessment</div>
+                        <div class="empty-text">Upload turmeric image to begin assessment</div>
                     </div>
                     
                     <div class="results-active" id="resultsView">
                         <div class="result-display">
-                            <div class="crop-icon" id="cropIcon">🥥</div>
+                            <div class="crop-icon" id="cropIcon">🌿</div>
                         </div>
                         
                         <div class="metrics">
                             <div class="metric">
                                 <div class="metric-label">Quality Grade</div>
                                 <div class="metric-value">
-                                    <span class="grade-tag" id="gradeDisplay">A+</span>
+                                    <span class="grade-tag" id="gradeDisplay">—</span>
                                 </div>
                             </div>
                             
                             <div class="metric">
                                 <div class="metric-label">Confidence</div>
-                                <div class="metric-value" id="confidenceDisplay">95%</div>
+                                <div class="metric-value" id="confidenceDisplay">—</div>
                                 <div class="confidence-track">
                                     <div class="confidence-progress" id="confidenceBar"></div>
                                 </div>
                             </div>
                             
                             <div class="metric">
-                                <div class="metric-label">Classification</div>
-                                <div class="metric-value" id="cropDisplay" style="font-size: 1.25rem;">Tender Coconut</div>
+                                <div class="metric-label">Crop</div>
+                                <div class="metric-value" id="cropDisplay">Turmeric</div>
                             </div>
                             
                             <div class="metric">
                                 <div class="metric-label">Price Range</div>
-                                <div class="metric-value price-text" id="priceDisplay" style="font-size: 1.375rem;">₹25-30</div>
+                                <div class="metric-value price-text" id="priceDisplay">—</div>
                             </div>
                         </div>
                     </div>
@@ -211,14 +195,14 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">FarmGrade AI</div>
-                <p class="footer-text">Advanced agricultural intelligence for modern farming</p>
+                <p class="footer-text">AI-based turmeric quality grading system</p>
                 <p class="footer-text">
-                    <a href="#" class="footer-link">Hackathon Prototype 2025</a>
+                    Hackathon Prototype 2025
                 </p>
             </div>
         </div>
     </footer>
 
     <script src="/js/logic.js"></script>
-    </body>
+</body>
 </html>

@@ -20,7 +20,7 @@ uploadBtn.addEventListener("click", () => {
     if (!file) return;
 
     /* ===============================
-       1️⃣ SHOW "COMPUTING..." STATE
+       1️⃣ SHOW COMPUTING STATE
        =============================== */
     emptyState.style.display = "none";
     resultsView.style.display = "block";
@@ -39,10 +39,10 @@ uploadBtn.addEventListener("click", () => {
     gradeDisplay.innerText = "--";
     confidenceDisplay.innerText = "--";
     priceDisplay.innerText = "--";
-    cropDisplay.innerText = "--";
+    cropDisplay.innerText = "Turmeric";
 
     /* ===============================
-       2️⃣ SEND IMAGE TO BACKEND
+       2️⃣ PREPARE IMAGE
        =============================== */
     const formData = new FormData();
     formData.append("image", file);
@@ -52,6 +52,10 @@ uploadBtn.addEventListener("click", () => {
         method: "POST",
         body: formData
       });
+
+      if (!res.ok) {
+        throw new Error("Server error");
+      }
 
       const data = await res.json();
 
@@ -63,7 +67,7 @@ uploadBtn.addEventListener("click", () => {
         cropIcon.innerHTML = `
           <img 
             src="${reader.result}" 
-            alt="Uploaded Crop"
+            alt="Uploaded Turmeric"
             style="
               width: 100%;
               height: 100%;
@@ -78,15 +82,21 @@ uploadBtn.addEventListener("click", () => {
       /* ===============================
          4️⃣ UPDATE RESULTS
          =============================== */
-      gradeDisplay.innerText = data.grade;
-      confidenceDisplay.innerText = data.confidence + "%";
-      priceDisplay.innerText = data.price;
-      cropDisplay.innerText = data.crop;
+      gradeDisplay.innerText = data.grade ?? "N/A";
+      confidenceDisplay.innerText = data.confidence
+        ? data.confidence + "%"
+        : "N/A";
+      priceDisplay.innerText = data.price ?? "N/A";
+      cropDisplay.innerText = "Turmeric";
 
     } catch (err) {
       console.error(err);
-      cropIcon.innerHTML = `<span style="color:red;">Failed</span>`;
-      alert("Prediction failed. Check backend.");
+      cropIcon.innerHTML = `
+        <span style="color:red; font-weight:600;">
+          Prediction Failed
+        </span>
+      `;
+      alert("Prediction failed. Please check backend.");
     }
   };
 
